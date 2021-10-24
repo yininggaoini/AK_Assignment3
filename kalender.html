@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Here you can easily check the calender.">
+    <meta name="author" content="Yining Gao">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes">
+    <title>Kalender</title>
+
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://vuejs.org/js/vue.js"></script>
+    
+</head>
+<body>
+    <div id="wholeCalender" class="whole-css">
+
+        <!-- Jahr-Monat search Feld -->
+        <div id="search-feld">
+            <form name="search-feld-form">
+                Jahr: <input v-model="inputJahr" class="button-style" type="text" class="inputText" id="jahr-input" placeholder="Year's Num" maxlength="4"  />
+                Monat: <input v-model="inputMonth" class="button-style" type="text" class="inputText" id="monat-input" placeholder="1 - 12" maxlength="2"  required/>
+                <input @click="searchClick" class="button-style" type="button" id="search-button" value="search">
+                <input class="button-style" type="button" id="refresh-button" value="refresh">
+            </form>
+            <p>{{currentDay}}</p>
+            <p>(Wenn Sie den Kalender mehrmals benutzen, bitte immer zuerst "refresh" Button klicken,</br> danke für Ihr Verständnis!)</p>
+        </div>
+    
+        <div id="Calender">     
+            <!--Es zeigt aktuelle Monats und das gewünschte Monat auswählen.-->
+            <div id="actual-date-list">                
+                <strong id="actual-year-month">{{actualDatum}}</strong>
+            </div>
+    
+
+            <div id="wochentag-div">         
+                <table id="wochentag" class="whole-css">               
+                    <tr>
+                        <th v-for="items in weekArr" :key="items">{{items}}</th>
+                        
+                    </tr>  
+                    <tr>
+                        <th></th>
+
+                    </tr>       
+                </table>
+                
+            </div>
+    
+        </div>
+
+    </div>
+
+    
+
+    <script type="text/javascript">
+        const searchFeld = new Vue({
+            el:'#search-feld',
+            data :{
+                inputJahr:'',
+                inputMonth:'',
+                firstDay: ''
+            },
+            methods :{
+                searchClick: function(){
+                    let firstDay = new Date(this.inputJahr,this.inputMonth-1,1).getDay();
+                    if( firstDay==0){
+                        firstDay = 7;
+                    }
+                    console.log(firstDay);    
+                }
+            },
+            computed: {
+                currentDay: function(){
+                    let monthDays = new Date(this.inputJahr, this.inputMonth,0).getDate();
+                    return monthDays
+                }
+            }
+        })
+        const Calender = new Vue({
+            el: '#actual-year-month',
+            data: {
+                actualJahrMonth:'',
+                monatsArr :["Jän","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nom","Dez"]
+            },
+            computed: {
+                actualDatum:function(){
+                    actualJahrMonth = searchFeld.inputJahr + '-' + this.monatsArr[searchFeld.inputMonth-1];
+                    return actualJahrMonth
+                }
+            }
+        })
+        const Wochentag = new Vue({
+            el: '#wochentag',
+            data:{
+                weekArr: ["Mon","Dien","Mit","Donn","Fre","Sam","Sonn"]
+            },
+            computed: {
+                
+            }
+        })
+    </script>
+
+</body>
+</html>
