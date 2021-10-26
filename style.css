@@ -28,21 +28,45 @@ strong{
 }
 
 #actual-date-list{
-    margin: 10px;
+    margin: 20px;
 }
 
 #wochentag-div{
-    margin: 0px 20px 10px 20px;
-}
-
-#wochentag{
+    margin: 10px 20px 10px 20px;
+    padding: 10px;
     background-image: linear-gradient(to right, #AFEEEE, #FFEBCD);
     border-spacing: 15px;
     border-radius: 15px;
+}
+
+.wochentag{ 
+    width: 100%;
+    display: flex;
+}
+
+.data-area{
+    width: 100%;
+    display : flex;
+    flex-flow : row wrap;
+}
+
+.calender-item{
+    flex: 0 0 14.285%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: darkslategray;
 }
 
 p{
     color: #DB7093;
     font-size: large;
     font-family: monospace;
+}
+
+.week-item{
+    flex: 0 0 14.285%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

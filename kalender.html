@@ -22,10 +22,8 @@
                 Jahr: <input v-model="inputJahr" class="button-style" type="text" class="inputText" id="jahr-input" placeholder="Year's Num" maxlength="4"  />
                 Monat: <input v-model="inputMonth" class="button-style" type="text" class="inputText" id="monat-input" placeholder="1 - 12" maxlength="2"  required/>
                 <input @click="searchClick" class="button-style" type="button" id="search-button" value="search">
-                <input class="button-style" type="button" id="refresh-button" value="refresh">
             </form>
-            <p>{{currentDay}}</p>
-            <p>(Wenn Sie den Kalender mehrmals benutzen, bitte immer zuerst "refresh" Button klicken,</br> danke für Ihr Verständnis!)</p>
+            
         </div>
     
         <div id="Calender">     
@@ -33,22 +31,17 @@
             <div id="actual-date-list">                
                 <strong id="actual-year-month">{{actualDatum}}</strong>
             </div>
-    
 
-            <div id="wochentag-div">         
-                <table id="wochentag" class="whole-css">               
-                    <tr>
-                        <th v-for="items in weekArr" :key="items">{{items}}</th>
-                        
-                    </tr>  
-                    <tr>
-                        <th></th>
+            <div id="wochentag-div" >         
+                <ul class="wochentag" class="whole-css">               
+                    <li class="week-item" v-for="(item,index) in weekArr" :key="index">{{item}}</li>                    
+                </ul>
 
-                    </tr>       
-                </table>
-                
+                <ul class="data-area">
+                    <li class="calender-item" v-for="item in dataArr" >{{item}}</li>
+                </ul>
             </div>
-    
+ 
         </div>
 
     </div>
@@ -56,51 +49,50 @@
     
 
     <script type="text/javascript">
-        const searchFeld = new Vue({
-            el:'#search-feld',
+        const Calender = new Vue({
+            el:'#wholeCalender',
             data :{
                 inputJahr:'',
                 inputMonth:'',
-                firstDay: ''
+                firstDay: '',
+                actualJahrMonth:'',
+                monatsArr :["Jän","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nom","Dez"],
+                weekArr: ["Mon","Dien","Mit","Donn","Fre","Sam","Sonn"],
+                dataArr: [],
+                monthDays:''
             },
             methods :{
                 searchClick: function(){
+                    let dataArr = [];
                     let firstDay = new Date(this.inputJahr,this.inputMonth-1,1).getDay();
+
+                    let monthDays = new Date(this.inputJahr, this.inputMonth,0).getDate();      
+                    
                     if( firstDay==0){
                         firstDay = 7;
+                    } 
+
+                    for(let i=1;i<firstDay;i++){  
+                        dataArr.push(' ')
                     }
-                    console.log(firstDay);    
-                }
-            },
-            computed: {
-                currentDay: function(){
-                    let monthDays = new Date(this.inputJahr, this.inputMonth,0).getDate();
+
+                    for(let y=0;y<monthDays;y++){
+                        dataArr.push(y+1);
+                    }
+
+                    this.dataArr=dataArr;
+                    this.monthDays=monthDays;
                     return monthDays
                 }
-            }
-        })
-        const Calender = new Vue({
-            el: '#actual-year-month',
-            data: {
-                actualJahrMonth:'',
-                monatsArr :["Jän","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nom","Dez"]
             },
             computed: {
                 actualDatum:function(){
-                    actualJahrMonth = searchFeld.inputJahr + '-' + this.monatsArr[searchFeld.inputMonth-1];
+                    actualJahrMonth = this.inputJahr + '-' + this.monatsArr[this.inputMonth-1];
                     return actualJahrMonth
-                }
+                }   
             }
         })
-        const Wochentag = new Vue({
-            el: '#wochentag',
-            data:{
-                weekArr: ["Mon","Dien","Mit","Donn","Fre","Sam","Sonn"]
-            },
-            computed: {
-                
-            }
-        })
+
     </script>
 
 </body>
